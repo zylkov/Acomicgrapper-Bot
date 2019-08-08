@@ -6,11 +6,14 @@ url=r"https://acomics.ru/"
 type_info ={
     "Автор оригинала:":"authors",
     "Авторы оригинала:":"authors",
+    "Авторы:":"authors",
+    "Автор:":"authors",
     "Переводчики:":"authors_translation",
     "Переводчик:":"authors_translation",
     "Количество выпусков:":"count_pages",
     "Количество подписчиков:":"count_subscribes",
-    "Официальный сайт:":"offical_site",
+    "Официальный сайт:":"site",
+    "Сайт:":"site",
     "Возрастной рейтинг:":"rating",
     "Лицензия:":"license"
 }
@@ -38,12 +41,15 @@ def get_comic(name):
             info_withaut_tag = list(map(remove_tag, info.contents[1:]))
             data[name_data] = "".join([i.strip() for i in info_withaut_tag])
     
-    
+    if data.get("authors_translation") is not None:
+        data["type_comic"] = "translation"
+    else:
+        data["type_comic"] = "original"
     return data
 
 
 def main():
-    comic_data = get_comic("Savestate")
+    comic_data = get_comic("doodle-time")
     print(json.dumps(comic_data, indent=4))
 
 
