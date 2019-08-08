@@ -1,5 +1,7 @@
 import requests, re, json
 from bs4 import BeautifulSoup
+from PIL import Image
+from io import BytesIO
 
 url=r"https://acomics.ru/"
 
@@ -89,14 +91,18 @@ def get_page_img(name, number_page):
     data = {}
     data["src"] = url + soup.find("img", id="mainImage").get("src")
     data["name"] = name
-    data["page"] = number_page
+    data["page"] = str(number_page)
     return data
 
 def main():
     # comic_data = get_comic("doodle-time")
     # print(json.dumps(comic_data, indent=4))
-    baners = get_page_img("Tales-of-Elysium",169)
-    print(baners)
+    page_img = get_page_img("Tales-of-Elysium",169)
+    print(page_img)
+    response = requests.get(page_img["src"])
+    img = Image.open(BytesIO(response.content))
+    path= "F:/putons/ScraperAComics/testimg/"
+    img.save(path + page_img["name"] + "page " + page_img["page"] + ".jpg","JPEG")
 
 
 if __name__ == '__main__':
