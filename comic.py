@@ -66,11 +66,36 @@ def get_icon(name):
         icons.append(data)
     return icons
 
+def get_page(name, number_page):
+    page = requests.get(url+'~'+name+"/"+str(number_page))
+    soup = BeautifulSoup(page.text, 'html.parser')
+    content = soup.find(id="content")
+    data={}
+    data["page"] = str(number_page)
+
+    upper_content = content.find("div", class_="serial-nomargin")
+    data["title"] = upper_content.find("img", id="mainImage").get("alt")
+    data["image"] = url + upper_content.find("img", id="mainImage").get("src")
+    
+    add_info = soup.find(id="contentMargin").find("article", class_="authors")
+    data["author"] = add_info.find("a", class_="username").text
+    data["author_url"] = url + add_info.find("a", class_="username").get("href")
+    data["page_url"] = url+'~'+name+"/"+ str(number_page)
+    return data
+
+def get_page_img(name, number_page):
+    page = requests.get(url+'~'+name+"/"+str(number_page))
+    soup = BeautifulSoup(page.text, 'html.parser')
+    data = {}
+    data["src"] = url + soup.find("img", id="mainImage").get("src")
+    data["name"] = name
+    data["page"] = number_page
+    return data
 
 def main():
     # comic_data = get_comic("doodle-time")
     # print(json.dumps(comic_data, indent=4))
-    baners = get_icon("DarkForestOnline")
+    baners = get_page_img("Tales-of-Elysium",169)
     print(baners)
 
 
