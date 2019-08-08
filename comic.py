@@ -43,7 +43,8 @@ def get_comic(name):
 
 
 def main():
-    print(get_comic("DarkForestOnline"))
+    comic_data = get_comic("Savestate")
+    print(json.dumps(comic_data, indent=4))
 
 
 if __name__ == '__main__':
