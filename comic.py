@@ -54,12 +54,24 @@ def get_comic(name):
 
     return data
 
-
+def get_icon(name):
+    page = requests.get(url+'~'+name+"/banner")
+    soup = BeautifulSoup(page.text, 'html.parser')
+    content = soup.find(id="contentMargin").find(class_="serial-content")
+    icons=[]
+    for item in content.find_all("p"):
+        data = {}
+        data["link"] = url + item.find("img").get("src")
+        data["size"] = item.find_previous().text
+        icons.append(data)
+    return icons
 
 
 def main():
-    comic_data = get_comic("doodle-time")
-    print(json.dumps(comic_data, indent=4))
+    # comic_data = get_comic("doodle-time")
+    # print(json.dumps(comic_data, indent=4))
+    baners = get_icon("DarkForestOnline")
+    print(baners)
 
 
 if __name__ == '__main__':
