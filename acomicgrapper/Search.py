@@ -1,5 +1,6 @@
 import requests, re, json
 from bs4 import BeautifulSoup
+from Comic import Comic
 
 class Search:
     _url_site = r"https://acomics.ru/"
@@ -40,7 +41,7 @@ class Search:
 
             data['subscribe'] = comic_tag.find('td', class_='catdata4').span.text
 
-            data_comics.append(data)
+            data_comics.append(LinkComic(data['link'],data))
         return data_comics
 
     # Проверка перменной категории
@@ -165,11 +166,16 @@ class LinkComic:
         self.link = link
         self.info = info
     
-    def go(self):
-        pass
+    def open(self):
+        name = self.link[self.link.rfind('~')+1:]
+        return Comic(name)
 
 if __name__ == '__main__':
     comic_list = Search(categories= Search.cheack_categories(["животные","игры"]), page=1)
     data = comic_list.get()
-    print(json.dumps(data, indent=4))
+    data_info = [i.info for i in data]
+    print(json.dumps(data_info, indent=4))
+    #print([i.info for i in data])
     print(len(data))
+    comic = data[0].open()
+    print(comic.info)
