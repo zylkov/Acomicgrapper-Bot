@@ -6,11 +6,43 @@ class Search:
     _jar = requests.cookies.RequestsCookieJar()
     _jar.set('ageRestrict', '18', domain='acomics.ru', path='/')
 
-    def __init__(self, skip=0, categories=None, ratings=[2,3,4,5]):
-        self.skip = skip
+    def __init__(self, page=1, categories=None, ratings=[2,3,4,5]):
+        self.page = page
         self.categories = categories
         self.ratings = ratings
     
+    def get(self):
+        skip = (self.page - 1) * 10
+        payload ={'skip':skip, 'categories':self.categories, 'ratings[]':self.ratings}
+        page = requests.get(self._url_site+'comics', params=payload, cookies=self._jar)
+        soup = BeautifulSoup(page.text, 'html.parser')
+
+        # Парсим
+        tags = soup.find_all('table', class_='catalog-elem list-loadable')
+        data_comics=[]
+        for tag in tags:
+            data = {}
+            comic_tag = tag.contents[1]
+
+            image_tag = comic_tag.find('td', class_='catdata1')
+            data['icon'] = self._url_site + image_tag.img.get('src')
+
+            info_tag = comic_tag.find('td', class_='catdata2')
+            data['title'] = info_tag.a.text
+            data['link'] = info_tag.a.get('href')
+            data['name'] = data['link'][20:]
+            data['about'] = info_tag.find('div', class_='about').text
+            data['rating'] = info_tag.find('a', href="/rating").text
+
+            add_info_tag = comic_tag.find('td', class_='catdata3')
+            data['total'] = add_info_tag.find('span', class_='total').text.split(" ")[0]
+            data['status'] = add_info_tag.find_all('span')[2].text  # Уверен что сломаеться
+
+            data['subscribe'] = comic_tag.find('td', class_='catdata4').span.text
+
+            data_comics.append(data)
+        return data_comics
+
     # Проверка перменной категории
     @staticmethod
     def cheack_categories(categories):
@@ -127,3 +159,17 @@ class Search:
         else:
             print('ratings Error value. Неизвестный тип данных ratings', ratings)
             return None
+
+class LinkComic:
+    def __init__(self, link, info):
+        self.link = link
+        self.info = info
+    
+    def go(self):
+        pass
+
+if __name__ == '__main__':
+    comic_list = Search(categories= Search.cheack_categories(["животные","игры"]), page=1)
+    data = comic_list.get()
+    print(json.dumps(data, indent=4))
+    print(len(data))
