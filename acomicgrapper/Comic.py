@@ -83,11 +83,8 @@ class Comic(CraperPage):
             icons.append(data)
         return icons
     
-    def get_info_page(self):
-        pass
-    
-    def get_page(self):
-        pass
+    def get_page(self, number_page):
+        return Page(self.name, number_page)
 
 
 class Page(CraperPage):
@@ -95,14 +92,35 @@ class Page(CraperPage):
     def __init__(self, name, page):
         CraperPage.__init__(self, name)
         self.page = page
+        self.src = self._get_page()
 
-    def _get_soup(self, prefix):
-        return CraperPage._get_soup()
+    def _get_soup(self):
+        return CraperPage._get_soup(self, "/" + str(self.page))
+    
+    def _get_page(self):
+        soup = self._get_soup()
+        return self._url_site + soup.find("img", id="mainImage").get("src")
+    
+    def get_info(self):
+        soup = self._get_soup()
+        content = soup.find(id="content")
+        data={}
+        upper_content = content.find("div", class_="serial-nomargin")
+        data["title"] = upper_content.find("img", id="mainImage").get("alt")
+        data["image"] = self._url_site + upper_content.find("img", id="mainImage").get("src")
+        
+        add_info = soup.find(id="contentMargin").find("article", class_="authors")
+        data["author"] = add_info.find("a", class_="username").text
+        data["author_url"] = self._url_site + add_info.find("a", class_="username").get("href")
+        data["page_url"] = self._url_site+'~'+self.name+"/"+ str(self.page)
+        return data
+    
 
 def main():
     comic = Comic("Prophecy")
     # print(json.dumps(comic.get_info(), indent=4))
-    print(comic.icons)
+    print(comic.info)
+    print(comic.get_page(3).src)
 
 if __name__ == '__main__':
     main()
