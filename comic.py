@@ -5,6 +5,9 @@ from io import BytesIO
 
 url=r"https://acomics.ru/"
 
+jar = requests.cookies.RequestsCookieJar()
+jar.set('ageRestrict', '18', domain='acomics.ru', path='/')
+
 type_info ={
     "Автор оригинала:":"authors",
     "Авторы оригинала:":"authors",
@@ -26,7 +29,7 @@ def remove_tag(select):
     return select
 
 def get_comic(name):
-    page = requests.get(url+'~'+name+"/about")
+    page = requests.get(url+'~'+name+"/about", cookies=jar)
     soup = BeautifulSoup(page.text, 'html.parser')
     content = soup.find(id="contentMargin")
     data={}
@@ -57,7 +60,7 @@ def get_comic(name):
     return data
 
 def get_icon(name):
-    page = requests.get(url+'~'+name+"/banner")
+    page = requests.get(url+'~'+name+"/banner", cookies=jar)
     soup = BeautifulSoup(page.text, 'html.parser')
     content = soup.find(id="contentMargin").find(class_="serial-content")
     icons=[]
@@ -69,7 +72,7 @@ def get_icon(name):
     return icons
 
 def get_page(name, number_page):
-    page = requests.get(url+'~'+name+"/"+str(number_page))
+    page = requests.get(url+'~'+name+"/"+str(number_page), cookies=jar)
     soup = BeautifulSoup(page.text, 'html.parser')
     content = soup.find(id="content")
     data={}
@@ -86,7 +89,7 @@ def get_page(name, number_page):
     return data
 
 def get_page_img(name, number_page):
-    page = requests.get(url+'~'+name+"/"+str(number_page))
+    page = requests.get(url+'~'+name+"/"+str(number_page), cookies=jar)
     soup = BeautifulSoup(page.text, 'html.parser')
     data = {}
     data["src"] = url + soup.find("img", id="mainImage").get("src")
@@ -105,7 +108,7 @@ def main():
     # comic_data = get_comic("doodle-time")
     # print(json.dumps(comic_data, indent=4))
     path= "F:/putons/ScraperAComics/testimg/"
-    save_img("Tales-of-Elysium", 10, path)
+    save_img("Prophecy", 1, path)
 
 
 if __name__ == '__main__':
