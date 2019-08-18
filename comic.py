@@ -94,15 +94,18 @@ def get_page_img(name, number_page):
     data["page"] = str(number_page)
     return data
 
-def main():
-    # comic_data = get_comic("doodle-time")
-    # print(json.dumps(comic_data, indent=4))
-    page_img = get_page_img("Tales-of-Elysium",169)
+def save_img(name, number_page, path):
+    page_img = get_page_img(name,number_page)
     print(page_img)
     response = requests.get(page_img["src"])
     img = Image.open(BytesIO(response.content))
-    path= "F:/putons/ScraperAComics/testimg/"
     img.save(path + page_img["name"] + "page " + page_img["page"] + ".jpg","JPEG")
+
+def main():
+    # comic_data = get_comic("doodle-time")
+    # print(json.dumps(comic_data, indent=4))
+    path= "F:/putons/ScraperAComics/testimg/"
+    save_img("Tales-of-Elysium", 10, path)
 
 
 if __name__ == '__main__':
