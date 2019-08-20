@@ -2,19 +2,48 @@ import requests, re, json
 from bs4 import BeautifulSoup
 from Comic import Comic
 
+#https://acomics.ru/comics?categories=12&ratings%5B%5D=2&ratings%5B%5D=3&ratings%5B%5D=4&ratings%5B%5D=5&type=0&updatable=0&issue_count=2&sort=last_update&skip=0
+#type - тип комикса
+# Значения:
+# 0 - все типы
+# trans - переведенные
+# orig - оригиналы
+# updatable - статус
+# 0 - все
+# no - завершенные
+# yes - продолжающие
+# issue_count - минимум страниц знач число
+# sort - сортировка
+# last_update - по дате обновления
+# subscr_count - по кол подписчиков
+# issue_count - по кол страниц
+# serial_name - по алфавиту
+
 class Search:
     _url_site = r"https://acomics.ru/"
     _jar = requests.cookies.RequestsCookieJar()
     _jar.set('ageRestrict', '18', domain='acomics.ru', path='/')
 
-    def __init__(self, page=1, categories=None, ratings=[2,3,4,5]):
+    def __init__(self, page=1, categories=None, ratings=[2,3,4,5], comic_type=0, updatable=0, issue_count=2, comic_sort="last_update"):
         self.page = page
         self.categories = categories
         self.ratings = ratings
+        self.comic_type = comic_type
+        self.updatable = updatable
+        self.issue_count = issue_count
+        self.comic_sort = comic_sort
+
     
     def get(self):
         skip = (self.page - 1) * 10
-        payload ={'skip':skip, 'categories':self.categories, 'ratings[]':self.ratings}
+        payload ={
+            'skip':skip, 
+            'categories':self.categories, 
+            'ratings[]':self.ratings, 
+            'type':self.comic_type,
+            'updatable':self.updatable,
+            'issue_count':self.issue_count,
+            'sort':self.comic_sort}
         page = requests.get(self._url_site+'comics', params=payload, cookies=self._jar)
         soup = BeautifulSoup(page.text, 'html.parser')
 
@@ -170,8 +199,9 @@ class LinkComic:
         name = self.link[self.link.rfind('~')+1:]
         return Comic(name)
 
-if __name__ == '__main__':
-    comic_list = Search(categories= Search.cheack_categories(["животные","игры"]), page=1)
+
+def main():
+    comic_list = Search(categories= Search.cheack_categories(["животные","игры"]), page=1, comic_type="trans", comic_sort="serial_name")
     data = comic_list.get()
     data_info = [i.info for i in data]
     print(json.dumps(data_info, indent=4))
@@ -179,3 +209,6 @@ if __name__ == '__main__':
     print(len(data))
     comic = data[0].open()
     print(comic.info)
+
+if __name__ == '__main__':
+    main()
