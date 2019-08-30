@@ -19,6 +19,49 @@ from Comic import Comic
 # issue_count - по кол страниц
 # serial_name - по алфавиту
 
+
+
+
+class SearchKey:
+    _url_site = r"https://acomics.ru/"
+    _jar = requests.cookies.RequestsCookieJar()
+    _jar.set('ageRestrict', '18', domain='acomics.ru', path='/')
+
+    def __init__(self, keyword):
+        self.keyword = keyword
+
+    def get(self):
+        payload ={ 
+            "keyword":self.keyword}
+        page = requests.get(self._url_site+'search', params=payload, cookies=self._jar)
+        soup = BeautifulSoup(page.text, 'html.parser')
+
+        # Парсим
+        tags = soup.find_all('table', class_='catalog-elem list-loadable')
+        data_comics=[]
+        for tag in tags:
+            data = {}
+            comic_tag = tag.contents[1]
+
+            image_tag = comic_tag.find('td', class_='catdata1')
+            data['icon'] = self._url_site + image_tag.img.get('src')
+
+            info_tag = comic_tag.find('td', class_='catdata2')
+            data['title'] = info_tag.a.text
+            data['link'] = info_tag.a.get('href')
+            data['name'] = data['link'][20:]
+            data['about'] = info_tag.find('div', class_='about').text
+            data['rating'] = info_tag.find('a', href="/rating").text
+
+            add_info_tag = comic_tag.find('td', class_='catdata3')
+            data['total'] = add_info_tag.find('span', class_='total').text.split(" ")[0]
+            data['status'] = add_info_tag.find_all('span')[2].text  # Уверен что сломаеться
+
+            data['subscribe'] = comic_tag.find('td', class_='catdata4').span.text
+
+            data_comics.append(LinkComic(data['link'],data))
+        return data_comics
+
 class Search:
     _url_site = r"https://acomics.ru/"
     _jar = requests.cookies.RequestsCookieJar()
@@ -201,6 +244,17 @@ class LinkComic:
 
 
 def main():
+    test_search_key()
+
+
+def test_search_key():
+    comic_list = SearchKey("дом")
+    data = comic_list.get()
+    data_info = [i.info for i in data]
+    print(json.dumps(data_info, indent=4))
+    print(len(data))
+
+def test_search_catigoris():
     comic_list = Search(categories= Search.cheack_categories(["животные","игры"]), page=1, comic_type="trans", comic_sort="serial_name")
     data = comic_list.get()
     data_info = [i.info for i in data]
