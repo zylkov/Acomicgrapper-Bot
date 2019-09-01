@@ -1,15 +1,9 @@
 import logging
 import os
+import scenes
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
-
-def start(bot, update):
-    update.effective_message.reply_text("Hi!")
-
-
-def echo(bot, update):
-    update.effective_message.reply_text(update.effective_message.text)
 
 def error(bot, update, error):
     logger.warning('Update "%s" caused error "%s"', update, error)
@@ -32,8 +26,9 @@ if __name__ == "__main__":
     updater = Updater(TOKEN)
     dp = updater.dispatcher
     # Add handlers
-    dp.add_handler(CommandHandler('start', start))
-    dp.add_handler(MessageHandler(Filters.text, echo))
+    dp.add_handler(CommandHandler('start', scenes.start))
+    dp.add_handler(CommandHandler('help',scenes.help))
+    # dp.add_handler(MessageHandler(Filters.text, echo))
     dp.add_error_handler(error)
 
     # Start the webhook
