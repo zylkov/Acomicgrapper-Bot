@@ -1,25 +1,16 @@
 import telegram 
+import pkg_resources
+
+def get_response_text(file_name):
+    # https://stackoverflow.com/a/20885799/2490759
+    path = '/'.join(('texts', file_name))
+    return pkg_resources.resource_string(__name__, path).decode("UTF-8")
 
 def start(bot, update):
-    text = (
-        "**Добро пожаловать!**  :wave: :smile:"
-        "Я помогу вам в поисках комикса на сайте :heart: [acomic.ru](https://acomics.ru) :heart:, а также скачаю страницы специально для вас."   
-        "Если вы знаете название комикса выберите поиск комикса по названию. :capital_abcd: :mag:"
-        "Если вы не знаете название и хотите найти специально для себя комикс выберите поиск по категориям :large_blue_diamond: :mag:"
-)
-    update.effective_message.reply_text(text=text, parse_mode=telegram.ParseMode.MARKDOWN)
+    update.effective_message.reply_text(text=get_response_text('texts/greeting.tg.md'), parse_mode=telegram.ParseMode.MARKDOWN, disable_web_page_preview=True)
 
 def help(bot, update):
-    text=(
-        "**Заблудились?** :confounded:"
-        "Ничего здесь список основных команд:"
-        ":star: /start - Поприветствую вас ещё раз. Мне не сложно :relaxed:"
-        ":star: /help - Ты прям здесь! :smirk:"
-        ":star: /searchword - Поиск комикса по названию. :capital_abcd: :mag:"
-        ":star: /searchcat - Поиск комикса по категориям :large_blue_diamond: :mag:"
-        ":star: /open - Откроем этот комикс. Главное введите правильный его индикатор :sweat_smile:"
-    )
-    update.effective_message.reply_text(text=text, parse_mode=telegram.ParseMode.MARKDOWN)
+    update.effective_message.reply_text(text=get_response_text('texts/help.tg.md'), parse_mode=telegram.ParseMode.MARKDOWN, disable_web_page_preview=True)
 
 def test(bot, update):
     text = "*bold* _italic_ `fixed width font` [link](http://google.com)."
