@@ -23,5 +23,5 @@ def help(bot, update):
 
 def test(bot, update):
     text = ">**Test** :confounded:"
-    update.effective_message.reply_text(text=text, parse_mode=telegram.ParseMode.MARKDOWN)
+    bot.send_message(chat_id=update.message.chat_id,text=text, parse_mode=telegram.ParseMode.MARKDOWN)
 
