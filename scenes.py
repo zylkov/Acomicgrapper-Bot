@@ -7,10 +7,10 @@ def get_response_text(file_name):
     return pkg_resources.resource_string(__name__, path).decode("UTF-8")
 
 def start(bot, update):
-    update.effective_message.reply_text(text=get_response_text('texts/greeting.tg.md'), parse_mode=telegram.ParseMode.MARKDOWN, disable_web_page_preview=True)
+    update.effective_message.reply_text(text=get_response_text('greeting.tg.md'), parse_mode=telegram.ParseMode.MARKDOWN, disable_web_page_preview=True)
 
 def help(bot, update):
-    update.effective_message.reply_text(text=get_response_text('texts/help.tg.md'), parse_mode=telegram.ParseMode.MARKDOWN, disable_web_page_preview=True)
+    update.effective_message.reply_text(text=get_response_text('help.tg.md'), parse_mode=telegram.ParseMode.MARKDOWN, disable_web_page_preview=True)
 
 def test(bot, update):
     text = "*bold* _italic_ `fixed width font` [link](http://google.com)."
