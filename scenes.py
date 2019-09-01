@@ -22,6 +22,6 @@ def help(bot, update):
     update.effective_message.reply_text(text=text, parse_mode=telegram.ParseMode.MARKDOWN)
 
 def test(bot, update):
-    text = ">**Test** :confounded:"
+    text = "*bold* _italic_ `fixed width font` [link](http://google.com)."
     bot.send_message(chat_id=update.message.chat_id,text=text, parse_mode=telegram.ParseMode.MARKDOWN)
 
