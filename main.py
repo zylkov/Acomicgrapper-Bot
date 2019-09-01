@@ -28,6 +28,8 @@ if __name__ == "__main__":
     # Add handlers
     dp.add_handler(CommandHandler('start', scenes.start))
     dp.add_handler(CommandHandler('help',scenes.help))
+    dp.add_handler(CommandHandler('test',scenes.test))
+
     # dp.add_handler(MessageHandler(Filters.text, echo))
     dp.add_error_handler(error)
 
