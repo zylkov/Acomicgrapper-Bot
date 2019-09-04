@@ -31,7 +31,7 @@ def help(bot, update):
 
 
 def start_searchcat(bot, update):
-    update.effective_message.reply_text(text=get_message_text("searchcat.tg.md"), parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=searchcat_menu())
+    update.effective_message.reply_text(text=get_message_text("searchcat.tg.md"), parse_mode=telegram.ParseMode.MARKDOWN)
 
 def searchcat(bot, update):
     query = update.callback_query
