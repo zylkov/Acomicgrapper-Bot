@@ -31,13 +31,13 @@ def help(bot, update):
 
 
 def start_searchcat(bot, update):
-    data = [
+    data = {
         'cat':"все категории",
         'age':" ".join(["G", "PG", "PG-13","R"]),
         'type': "Все",
         'low_page': str(3),
         'sort':"по дате обнавления"
-    ]
+    }
     update.effective_message.reply_text(text=get_message_text("searchcat.tg.md", **data), 
                                         parse_mode=telegram.ParseMode.MARKDOWN)
 
