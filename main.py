@@ -5,8 +5,8 @@ import scenes
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 
-def error(bot, update, error):
-    logger.warning('Update "%s" caused error "%s"', update, error)
+# def error(bot, update, error):
+#     logger.warning('Update "%s" caused error "%s"', update, error)
 
 class TestBoop:
     def __init__(self):
@@ -33,7 +33,7 @@ class TestBoop:
         dp.add_handler(CommandHandler('boop', self.boop))
 
         # dp.add_handler(MessageHandler(Filters.text, echo))
-        dp.add_error_handler(error)
+        dp.add_error_handler(self.error)
 
         # Start the webhook
         updater.start_webhook(listen="0.0.0.0",
@@ -48,6 +48,9 @@ class TestBoop:
         chat_id = update.message.chat_id
         bot = context.bot
         bot.send_message(chat_id=chat_id, text="Boop:{}".format(self.click))
+
+    def error(self, bot, update, error):
+        self.logger.warning('Update "%s" caused error "%s"', update, error)
         
 
 
