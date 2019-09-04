@@ -32,14 +32,13 @@ def help(bot, update):
 
 def start_searchcat(bot, update):
     data = [
-        "все категории",
-        " ".join(["G", "PG", "PG-13","R"]),
-        "Все",
-        str(3),
-        "по дате обнавления"
+        'cat':"все категории",
+        'age':" ".join(["G", "PG", "PG-13","R"]),
+        'type': "Все",
+        'low_page': str(3),
+        'sort':"по дате обнавления"
     ]
-    print(get_message_text("searchcat.tg.md"))
-    update.effective_message.reply_text(text=get_message_text("searchcat.tg.md").format(data), 
+    update.effective_message.reply_text(text=get_message_text("searchcat.tg.md", **data), 
                                         parse_mode=telegram.ParseMode.MARKDOWN)
 
 def searchcat(bot, update):
@@ -94,4 +93,3 @@ def choose_age_menu():
 def test(bot, update):
     text = "*bold* _italic_ `fixed width font` [link](http://google.com)."
     bot.send_message(chat_id=update.message.chat_id,text=text, parse_mode=telegram.ParseMode.MARKDOWN)
-
