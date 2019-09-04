@@ -2,7 +2,7 @@ import logging
 import os
 import scenes
 
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 
 
 def error(bot, update, error):
@@ -29,6 +29,11 @@ if __name__ == "__main__":
     dp.add_handler(CommandHandler('start', scenes.start))
     dp.add_handler(CommandHandler('help',scenes.help))
     dp.add_handler(CommandHandler('test',scenes.test))
+
+    dp.add_handler(CommandHandler('searchcat', scenes.start_searchcat))
+    dp.add_handler(CallbackQueryHandler(scenes.searchcat, pattern="searchcat"))
+    dp.add_handler(CallbackQueryHandler(scenes.choose_age, pattern="ch_age"))
+
 
     # dp.add_handler(MessageHandler(Filters.text, echo))
     dp.add_error_handler(error)
