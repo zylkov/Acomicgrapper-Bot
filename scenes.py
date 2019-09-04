@@ -58,6 +58,7 @@ def searchcat_menu():
         ["Выбрать метод сортировки","ch_sort"]
     ]
     button_list = create_button_list(base_button_list)
+    print(button_list)
     return telegram.InlineKeyboardMarkup(build_menu(button_list, 1))
 
 def choose_age_menu():
