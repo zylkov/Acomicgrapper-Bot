@@ -38,6 +38,7 @@ def start_searchcat(bot, update):
         str(3),
         "по дате обнавления"
     ]
+    print(get_message_text("searchcat.tg.md"))
     update.effective_message.reply_text(text=get_message_text("searchcat.tg.md").format(data), 
                                         parse_mode=telegram.ParseMode.MARKDOWN)
 
