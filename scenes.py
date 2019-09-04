@@ -38,7 +38,7 @@ def start_searchcat(bot, update):
         'low_page': str(3),
         'sort':"по дате обнавления"
     }
-    update.effective_message.reply_text(text=get_response_text("searchcat.tg.md").formaat(**data), 
+    update.effective_message.reply_text(text=get_response_text("searchcat.tg.md").format(**data), 
                                         parse_mode=telegram.ParseMode.MARKDOWN)
 
 def searchcat(bot, update):
