@@ -43,11 +43,9 @@ class TestBoop:
         updater.idle()
         
     
-    def boop(self, update, context):
+    def boop(self, bot, update):
         self.click += 1
-        chat_id = update.message.chat_id
-        bot = context.bot
-        bot.send_message(chat_id=chat_id, text="Boop:{}".format(self.click))
+        update.effective_message.reply_text(text="*Boop* {}".format(self.click),parse_mode=telegram.ParseMode.MARKDOWN)
 
     def error(self, bot, update, error):
         self.logger.warning('Update "%s" caused error "%s"', update, error)
