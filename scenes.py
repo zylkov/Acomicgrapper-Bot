@@ -52,7 +52,7 @@ def searchcat(bot, update):
     query = update.callback_query
     bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
-                        text=get_message_text("searchcat.tg.md").format(info = data),
+                        text=get_response_text("searchcat.tg.md").format(**data),
                         parse_mode=telegram.ParseMode.MARKDOWN, 
                         reply_markup=searchcat_menu())
 
