@@ -23,7 +23,7 @@ class TestBoop:
         #State 
         self.click = 0
         # Set up the Updater
-        updater = Updater(TOKEN)
+        updater = Updater(self.TOKEN)
         dp = updater.dispatcher
         # Add handlers
 
@@ -37,9 +37,9 @@ class TestBoop:
 
         # Start the webhook
         updater.start_webhook(listen="0.0.0.0",
-                            port=int(PORT),
-                            url_path=TOKEN)
-        updater.bot.setWebhook("https://{}.herokuapp.com/{}".format(NAME, TOKEN))
+                            port=int(self.PORT),
+                            url_path=self.TOKEN)
+        updater.bot.setWebhook("https://{}.herokuapp.com/{}".format(self.NAME, self.TOKEN))
         updater.idle()
         
     
