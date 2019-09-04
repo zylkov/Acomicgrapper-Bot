@@ -31,7 +31,7 @@ if __name__ == "__main__":
     dp.add_handler(CommandHandler('test',scenes.test))
 
     dp.add_handler(CommandHandler('searchcat', scenes.start_searchcat))
-    dp.add_handler(CallbackQueryHandler(scenes.searchcat, pattern="searchcat"))
+    dp.add_handler(CallbackQueryHandler(scenes.searchcat, pattern="srchcat"))
     dp.add_handler(CallbackQueryHandler(scenes.choose_age, pattern="ch_age"))
 
 

@@ -68,7 +68,7 @@ def choose_age_menu():
         ["PG", "age_pg"],
         ["R", "age_r"],
         ["NC-17", "age_nc"],
-        ["<- Вернуться в меню","searchcat"]
+        ["<- Вернуться в меню","srchcat"]
     ]
     button_list = create_button_list(base_button_list)
     return telegram.InlineKeyboardMarkup(build_menu(button_list, 1))
