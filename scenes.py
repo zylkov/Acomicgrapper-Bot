@@ -7,7 +7,7 @@ def get_response_text(file_name):
     return pkg_resources.resource_string(__name__, path).decode("UTF-8")
 
 def get_message_text(name_file, args={}):
-    get_response_text(name_file).format(args)
+    return get_response_text(name_file).format(args)
 
 def start(bot, update):
     update.effective_message.reply_text(text=get_message_text('greeting.tg.md', update.message.from_user.first_name), parse_mode=telegram.ParseMode.MARKDOWN)
